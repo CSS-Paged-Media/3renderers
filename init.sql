@@ -13,7 +13,3 @@ CREATE TABLE IF NOT EXISTS pdfs (
 CREATE INDEX idx_pdfs_hash ON pdfs(hash);
 CREATE INDEX idx_pdfs_status ON pdfs(status);
 CREATE INDEX idx_pdfs_created_at ON pdfs(created_at);
-
--- Cleanup old completed jobs (run as cron)
--- DELETE FROM pdfs WHERE status = 'success' AND updated_at < NOW() - INTERVAL '1 hour';
--- DELETE FROM pdfs WHERE status = 'error' AND updated_at < NOW() - INTERVAL '24 hours';
