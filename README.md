@@ -8,65 +8,6 @@ A powerful, scalable PDF generation API supporting three industry-standard rende
 
 ## 🚀 Quick Start
 
-### 1. Clone the Repository
-```bash
-git clone https://github.com/CSS-Paged-Media/3renderers.git
-cd 3renderers
-```
-
-### 2. Configure Environment
-```bash
-# Copy example environment file
-cp .env.example .env
-
-# Edit .env with your settings
-nano .env
-```
-
-Minimum required settings:
-```env
-NODE_ENV=development
-POSTGRES_PASSWORD=your_secure_password_here
-```
-
-### 3. Start Services
-```bash
-# Build and start all services
-docker-compose up --build -d
-
-# View logs
-docker-compose logs -f
-
-# Check health
-curl http://localhost/health
-```
-
-### 4. Test the API
-```bash
-# Simple PDF generation
-curl -X POST http://localhost/api/render \
-  -H "Content-Type: application/json" \
-  -d '{
-    "html": "<h1>Hello World</h1>",
-    "options": {
-      "renderer": "weasyprint",
-      "sync": "true"
-    }
-  }' \
-  --output test.pdf
-
-# Open the generated PDF
-open test.pdf  # macOS
-xdg-open test.pdf  # Linux
-```
-
-## 📚 API Documentation
-
-https://www.postman.com/three-renderers/pdf-api/overview
-
-
-## 🏭 Production Deployment
-
 ### 1. Clone and Configure
 ```bash
 # Clone repository
@@ -100,11 +41,9 @@ WORKER_CONCURRENCY=5
 # API
 API_PORT=3000
 ```
+
 ### 2. Start Production Services
 ```bash
-# Load environment
-export $(cat .env.production | xargs)
-
 # Build and start
 docker-compose -f docker-compose.yml up --build -d
 
@@ -115,10 +54,34 @@ docker-compose -f docker-compose.yml ps
 docker-compose -f docker-compose.yml logs -f
 ```
 
-## Rebuild cron (optional)
+## 3. Rebuild cron (optional)
 ```bash
 chmod +x /root/pdf-rendering-service/scripts/update-docker.sh
 
 # Run daily at 2 AM
 0 2 * * * /root/pdf-rendering-service/scripts/update-docker.sh
 ```
+
+### 4. Test the API
+```bash
+# Simple PDF generation
+curl -X POST http://localhost/api/render \
+  -H "Content-Type: application/json" \
+  -d '{
+    "html": "<h1>Hello World</h1>",
+    "options": {
+      "renderer": "weasyprint",
+      "sync": "true"
+    }
+  }' \
+  --output test.pdf
+
+# Open the generated PDF
+open test.pdf  # macOS
+xdg-open test.pdf  # Linux
+```
+
+## 📚 API Documentation
+
+https://www.postman.com/three-renderers/pdf-api/overview
+
