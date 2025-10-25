@@ -1,0 +1,155 @@
+services:
+  # ===================================
+  # Nginx Reverse Proxy
+  # ===================================
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./public:/usr/share/nginx/html:ro
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+      - /var/www/letsencrypt:/var/www/letsencrypt:rw
+    depends_on:
+      - api
+    restart: unless-stopped
+    networks:
+      - pdf-network
+
+  # ===================================
+  # API Server
+  # ===================================
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: node dist/api.js
+    env_file:
+      - .env.production
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - pdf-network
+    deploy:
+      replicas: 2
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1024M
+    cap_drop:
+      - ALL
+    security_opt:
+      - "no-new-privileges:true"
+
+  # ===================================
+  # PDF Workers (Scalable)
+  # ===================================
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: node dist/worker.js
+    env_file:
+      - .env.production
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - pdf-network
+    deploy:
+      replicas: 4  # Scale based on load
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 1.5G
+    cap_drop:
+      - ALL
+    cap_add:
+      - SYS_ADMIN
+    security_opt:
+      - "seccomp=./secure/seccomp-worker.json"
+    tmpfs:
+      - /tmp:size=200m
+    shm_size: 1g
+    environment:
+      - TMPDIR=/tmp
+      - PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
+      - PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+      - CHROME_USER_DATA_DIR=/tmp/chrome-user-data
+
+  # ===================================
+  # Redis Queue
+  # ===================================
+  redis:
+    image: redis:7-alpine
+    command: redis-server --appendonly yes --maxmemory 512mb --maxmemory-policy allkeys-lru
+    volumes:
+      - ./data/redis:/data
+    restart: unless-stopped
+    networks:
+      - pdf-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+
+  # ===================================
+  # PostgreSQL Database
+  # ===================================
+  postgres:
+    image: postgres:16-alpine
+    env_file:
+      - .env.production
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    restart: unless-stopped
+    networks:
+      - pdf-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pdfuser -d pdfgen"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+
+  # ===================================
+  # Cron
+  # ===================================
+  cron:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: node dist/cron/index.js
+    env_file:
+      - .env.production
+    depends_on:
+      redis:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    restart: always
+    cap_drop:
+      - ALL
+    security_opt:
+      - "no-new-privileges:true"
+    networks:
+      - pdf-network
+
+networks:
+  pdf-network:
+    driver: bridge
+
+volumes:
+  worker-temp:

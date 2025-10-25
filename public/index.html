@@ -1,0 +1,734 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link href="data:image/png;base64,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" rel="icon" type="image/x-icon" />
+    <title>3renderers.dev</title>
+    <style>
+      /* http://meyerweb.com/eric/tools/css/reset/ 
+        v2.0 | 20110126
+        License: none (public domain)
+      */
+
+      html, body, div, span, applet, object, iframe,
+      h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+      a, abbr, acronym, address, big, cite, code,
+      del, dfn, em, img, ins, kbd, q, s, samp,
+      small, strike, strong, sub, sup, tt, var,
+      b, u, i, center,
+      dl, dt, dd, ol, ul, li,
+      fieldset, form, label, legend,
+      table, caption, tbody, tfoot, thead, tr, th, td,
+      article, aside, canvas, details, embed, 
+      figure, figcaption, footer, header, hgroup, 
+      menu, nav, output, ruby, section, summary,
+      time, mark, audio, video {
+        /*margin: 0;*/
+        padding: 0;
+        border: 0;
+        font-size: 100%;
+        font: inherit;
+        vertical-align: baseline;
+      }
+      /* HTML5 display-role reset for older browsers */
+      article, aside, details, figcaption, figure, 
+      footer, header, hgroup, menu, nav, section {
+        display: block;
+      }
+      body {
+        line-height: 1;
+      }
+      ol, ul {
+        list-style: none;
+      }
+      blockquote, q {
+        quotes: none;
+      }
+      blockquote:before, blockquote:after,
+      q:before, q:after {
+        content: '';
+        content: none;
+      }
+      table {
+        border-collapse: collapse;
+        border-spacing: 0;
+      }
+      /**
+      * By Oskar Wickström
+      * Licensed under the MIT License (https://github.com/owickstrom/the-monospace-web/blob/main/LICENSE.md)
+      **/
+      @import url('https://fonts.cdnfonts.com/css/jetbrains-mono-2');
+
+      :root {
+        --font-family: "JetBrains Mono", monospace;
+        --line-height: 1.20rem;
+        --border-thickness: 2px;
+        --text-color: #000;
+        --text-color-alt: #666;
+        --background-color: #fff;
+        --background-color-alt: #eee;
+
+        --font-weight-normal: 500;
+        --font-weight-medium: 600;
+        --font-weight-bold: 800;
+
+        font-family: var(--font-family);
+        font-optical-sizing: auto;
+        font-weight: var(--font-weight-normal);
+        font-style: normal;
+        font-variant-numeric: tabular-nums lining-nums;
+        font-size: 16px;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --text-color: #fff;
+          --text-color-alt: #aaa;
+          --background-color: #000;
+          --background-color-alt: #111;
+        }
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+
+      * + * {
+        margin-top: var(--line-height);
+      }
+
+      html {
+        display: flex;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        flex-direction: column;
+        align-items: center;
+        background: var(--background-color);
+        color: var(--text-color);
+      }
+
+      body {
+        position: relative;
+        width: 100%;
+        margin: 0;
+        padding: var(--line-height) 2ch;
+        max-width: calc(min(80ch, round(down, 100%, 1ch)));
+        line-height: var(--line-height);
+        overflow-x: hidden;
+      }
+
+      @media screen and (max-width: 480px) {
+        :root {
+          font-size: 14px;
+        }
+        body {
+          padding: var(--line-height) 1ch;
+        }
+      }
+
+      h1, h2, h3, h4, h5, h6 {
+        font-weight: var(--font-weight-bold);
+        margin: calc(var(--line-height) * 2) 0 var(--line-height);
+        line-height: var(--line-height);
+      }
+
+      h1 {
+        font-size: 2rem;
+        line-height: calc(2 * var(--line-height));
+        margin-bottom: calc(var(--line-height) * 2);
+        text-transform: uppercase;
+      }
+      h2 {
+        font-size: 1rem;
+        text-transform: uppercase;
+      }
+
+      hr {
+        position: relative;
+        display: block;
+        height: var(--line-height);
+        margin: calc(var(--line-height) * 1.5) 0;
+        border: none;
+        color: var(--text-color);
+      }
+      hr:after {
+        display: block;
+        content: "";
+        position: absolute;
+        top: calc(var(--line-height) / 2 - var(--border-thickness));
+        left: 0;
+        width: 100%;
+        border-top: calc(var(--border-thickness) * 3) double var(--text-color);
+        height: 0;
+      }
+
+      a {
+        text-decoration-thickness: var(--border-thickness);
+      }
+
+      a:link, a:visited {
+        color: var(--text-color);
+      }
+
+      p {
+        margin-bottom: var(--line-height);
+      }
+
+      strong {
+        font-weight: var(--font-weight-bold);
+      }
+      em {
+        font-style: italic;
+      }
+
+      sub {
+        position: relative;
+        display: inline-block;
+        margin: 0;
+        vertical-align: sub;
+        line-height: 0;
+        width: calc(1ch / 0.75);
+        font-size: .75rem;
+      }
+
+      table {
+        position: relative;
+        top: calc(var(--line-height) / 2);
+        width: calc(round(down, 100%, 1ch));
+        border-collapse: collapse;
+        margin: 0 0 calc(var(--line-height) * 2);
+      }
+
+      th, td {
+        border: var(--border-thickness) solid var(--text-color);
+        padding: 
+          calc((var(--line-height) / 2))
+          calc(1ch - var(--border-thickness) / 2)
+          calc((var(--line-height) / 2) - (var(--border-thickness)))
+        ;
+        line-height: var(--line-height);
+        vertical-align: top;
+        text-align: left;
+      }
+      table tbody tr:first-child > * {
+        padding-top: calc((var(--line-height) / 2) - var(--border-thickness));
+      }
+
+
+      th {
+        font-weight: 700;
+      }
+      .width-min {
+        width: 0%;
+      }
+      .width-auto {
+        width: 100%;
+      }
+
+      .header {
+        margin-bottom: calc(var(--line-height) * 2);
+      }
+      .header h1 {
+        margin: 0;
+      }
+      .header tr td:last-child {
+        text-align: right;
+      }
+
+      p {
+        word-break: break-word;
+        word-wrap: break-word;
+        hyphens: auto;
+      }
+
+      img, video {
+        display: block;
+        width: 100%;
+        object-fit: contain;
+        overflow: hidden;
+      }
+      img {
+        font-style: italic;
+        color: var(--text-color-alt);
+      }
+
+      details {
+        border: var(--border-thickness) solid var(--text-color);
+        padding: calc(var(--line-height) - var(--border-thickness)) 1ch;
+        margin-bottom: var(--line-height);
+      }
+
+      summary {
+        font-weight: var(--font-weight-medium);
+        cursor: pointer;
+      }
+      details[open] summary {
+        margin-bottom: var(--line-height);
+      }
+
+      details ::marker {
+        display: inline-block;
+        content: '▶';
+        margin: 0;
+      }
+      details[open] ::marker {
+        content: '▼';
+      }
+
+      details :last-child {
+        margin-bottom: 0;
+      }
+
+      pre {
+        white-space: pre;
+        overflow-x: auto;
+        margin: var(--line-height) 0;
+        overflow-y: hidden;
+      }
+      figure pre {
+        margin: 0;
+      }
+
+      pre, code {
+        font-family: var(--font-family);
+      }
+
+      code {
+        font-weight: var(--font-weight-medium);
+        text-wrap: auto;
+      }
+
+      figure {
+        margin: calc(var(--line-height) * 2) 3ch;
+        overflow-x: auto;
+        overflow-y: hidden;
+      }
+
+      figcaption {
+        display: block;
+        font-style: italic;
+        margin-top: var(--line-height);
+      }
+
+      ul, ol {
+        padding: 0;
+        margin: 0 0 var(--line-height);
+      }
+
+      ul {
+        list-style-type: square;
+        padding: 0 0 0 2ch;
+      }
+      ol {
+        list-style-type: none;
+        counter-reset: item;
+        padding: 0;
+      }
+      ol ul,
+      ol ol,
+      ul ol,
+      ul ul {
+        padding: 0 0 0 3ch;
+        margin: 0;
+      }
+      ol li:before { 
+        content: counters(item, ".") ". ";
+        counter-increment: item;
+        font-weight: var(--font-weight-medium);
+      }
+
+      li {
+        margin: 0;
+        padding: 0;
+      }
+
+      li::marker {
+        line-height: 0;
+      }
+
+      ::-webkit-scrollbar {
+          height: var(--line-height);
+      }
+
+      input, button, textarea {
+        border: var(--border-thickness) solid var(--text-color);
+        padding: 
+          calc(var(--line-height) / 2 - var(--border-thickness))
+          calc(1ch - var(--border-thickness));
+        margin: 0;
+        font: inherit;
+        font-weight: inherit;
+        height: calc(var(--line-height) * 2);
+        width: auto;
+        overflow: visible;
+        background: var(--background-color);
+        color: var(--text-color);
+        line-height: normal;
+        -webkit-font-smoothing: inherit;
+        -moz-osx-font-smoothing: inherit;
+        -webkit-appearance: none;
+      }
+
+      input[type=checkbox],
+      input[type=radio] {
+        display: inline-grid;
+        place-content: center;
+        vertical-align: top;
+        width: 2ch;
+        height: var(--line-height);
+        cursor: pointer;
+      }
+      input[type=checkbox]:checked:before,
+      input[type=radio]:checked:before {
+        content: "";
+        width: 1ch;
+        height: calc(var(--line-height) / 2);
+        background: var(--text-color);
+      }
+      input[type=radio],
+      input[type=radio]:before {
+        border-radius: 100%;
+      }
+
+      button:focus, input:focus {
+        --border-thickness: 3px;
+        outline: none;
+      }
+
+      input {
+        width: calc(round(down, 100%, 1ch));
+      }
+      ::placeholder {
+        color: var(--text-color-alt);
+        opacity: 1;
+      }
+      ::-ms-input-placeholder {
+        color: var(--text-color-alt);
+      }
+      button::-moz-focus-inner {
+        padding: 0;
+        border: 0
+      }
+
+      button {
+        text-transform: uppercase;
+        font-weight: var(--font-weight-medium);
+        cursor: pointer;
+      }
+
+      button:hover {
+        background: var(--background-color-alt);
+      }
+      button:active {
+        transform: translate(2px, 2px);
+      }
+
+      label {
+        display: block;
+        width: calc(round(down, 100%, 1ch));
+        height: auto;
+        line-height: var(--line-height);
+        font-weight: var(--font-weight-medium);
+        margin: 0;
+      }
+
+      label input {
+        width: 100%;
+      }
+
+      .tree, .tree ul {
+        position: relative;
+        padding-left: 0;
+        list-style-type: none;
+        line-height: var(--line-height);
+      }
+      .tree ul {
+        margin: 0;
+      }
+      .tree ul li {
+        position: relative;
+        padding-left: 1.5ch;
+        margin-left: 1.5ch;
+        border-left: var(--border-thickness) solid var(--text-color);
+      }
+      .tree ul li:before {
+        position: absolute;
+        display: block;
+        top: calc(var(--line-height) / 2);
+        left: 0;
+        content: "";
+        width: 1ch;
+        border-bottom: var(--border-thickness) solid var(--text-color);
+      }
+      .tree ul li:last-child {
+        border-left: none;
+      }
+      .tree ul li:last-child:after {
+        position: absolute;
+        display: block;
+        top: 0;
+        left: 0;
+        content: "";
+        height: calc(var(--line-height) / 2);
+        border-left: var(--border-thickness) solid var(--text-color);
+      }
+
+      .grid {
+        --grid-cells: 0;
+        display: flex;
+        gap: 1ch;
+        width: calc(round(down, 100%, (1ch * var(--grid-cells)) - (1ch * var(--grid-cells) - 1)));
+        margin-bottom: var(--line-height);
+      }
+
+      .grid > *,
+      .grid > input {
+        flex: 0 0 calc(round(down, (100% - (1ch * (var(--grid-cells) - 1))) / var(--grid-cells), 1ch));
+      }
+      .grid:has(> :last-child:nth-child(1)) { --grid-cells: 1; }
+      .grid:has(> :last-child:nth-child(2)) { --grid-cells: 2; }
+      .grid:has(> :last-child:nth-child(3)) { --grid-cells: 3; }
+      .grid:has(> :last-child:nth-child(4)) { --grid-cells: 4; }
+      .grid:has(> :last-child:nth-child(5)) { --grid-cells: 5; }
+      .grid:has(> :last-child:nth-child(6)) { --grid-cells: 6; }
+      .grid:has(> :last-child:nth-child(7)) { --grid-cells: 7; }
+      .grid:has(> :last-child:nth-child(8)) { --grid-cells: 8; }
+      .grid:has(> :last-child:nth-child(9)) { --grid-cells: 9; }
+    </style>
+    <!-- Privacy-friendly analytics by Plausible -->
+    <script async src="https://plausible.io/js/pa-AfOXDhyepzBjdDQxzdyPA.js"></script>
+    <script>
+      window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+      plausible.init()
+    </script>
+  </head>
+  <body>
+    <table class="header">
+      <tr>
+        <td colspan="2" rowspan="2" class="width-auto">
+          <h1 class="title">3renderers.dev</h1>
+          <span class="subtitle">Free HTML-to-PDF rendering service using the open-source tools <a href="https://pagedjs.org/">Paged.js</a>, <a href="https://weasyprint.org/">WeasyPrint</a>, and <a href="https://vivliostyle.org/">Vivliostyle</a>.</span>
+        </td>
+        <th>Version</th>
+        <td class="width-min">v0.0.1</td>
+      </tr>
+      <tr>
+        <th>Updated</th>
+        <td class="width-min"><time style="white-space: pre;">2025-10-23</time></td>
+      </tr>
+      <tr>
+        <th class="width-min">Author</th>
+        <td class="width-auto"><a href="https://azettl.net" target="_blank"><cite>Andreas Zettl</cite></a></td>
+        <th class="width-min">Postman</th>
+        <td><a href="https://www.postman.com/three-renderers/pdf-api/overview" target="_blank">Collection</a></td>
+      </tr>
+    </table>
+    <header class="site-header">
+      <div class="container">
+<p>The service allows you to create PDFs from your HTML and CSS source free of cost.</p>
+<p><strong>Please be aware that there is no guarantee that this service will be available or that the current rate limits and monthly traffic restrictions will stay the same.</strong></p>
+<p>Once the monthly max. traffic is reached, the service will return an error message. On the first of each month, the limit is reset, and you will be able to render more PDFs.</p>
+<p>Also, please note there is no paid version of this service to get rid of the restrictions, but there are many great ones out there (for example, <a href="https://www.europdf.eu/">EuroPDF</a>).</p>
+
+        
+      </div>
+    </header>
+
+    <main class="container docs">
+      <section id="quick-start">
+        <h2>Quick Start</h2>
+        <p>Fast test with curl (sync rendering):</p>
+        <pre><code class="bash">curl -X POST http://localhost/api/render \
+      -H "Content-Type: application/json" \
+      -d '{"html":"&lt;h1&gt;Hi&lt;/h1&gt;","options":{"renderer":"weasyprint","sync":"true"}}' --output result.pdf</code></pre>
+        <p>For more advanced usage, please refer to the <a href="https://www.postman.com/three-renderers/pdf-api/overview" target="_blank">API documentation</a>.</p>
+      </section>
+
+      <section id="metrics">
+        <h2>PDF Counts</h2>
+        <figure>
+          <div id="pdf-chart" aria-live="polite" class="chart">Loading PDF counters…</div>
+          <figcaption>Live aggregated PDF counters</figcaption>
+        </figure>
+      </section>
+
+      <section id="traffic">
+        <h2>Traffic Usage</h2>
+        <figure>
+          <div id="traffic-chart" aria-live="polite" class="chart">Loading traffic data…</div>
+          <figcaption>Current month bandwidth usage</figcaption>
+        </figure>
+      </section>
+
+    </main>
+
+    <style>
+      /* Simple styling for ASCII chart */
+      .chart-row {
+        display: grid;
+        grid-template-columns: 12ch 1fr auto;
+        gap: 1ch;
+        align-items: center;
+        font-family: var(--font-family);
+      }
+      .chart-bar {
+        background: transparent;
+        font-family: var(--font-family);
+        white-space: pre;
+        overflow: hidden;
+        margin:0;
+      }
+      .chart-num {
+        font-family: var(--font-family);
+        font-weight: 600;
+        white-space: nowrap;
+        margin:0;
+      }
+    </style>
+
+    <script>
+      // Render a horizontal ASCII bar chart for three counts (total, week, month)
+      async function fetchPdfCounts() {
+        try {
+          const r = await fetch('/api/metrics/pdf');
+          if (!r.ok) throw new Error('Network response was not ok');
+          const json = await r.json();
+          return json.counts || { total: 0, week: 0, month: 0 };
+        } catch (err) {
+          console.error('Failed to fetch PDF counts', err);
+          return { total: 0, week: 0, month: 0 };
+        }
+      }
+
+      function renderHorizontalAsciiChart(containerEl, labels, values, options = {}) {
+        const width = Math.max(40, Math.min(120, Math.floor((window.innerWidth || 800) / 8)));
+        const maxVal = Math.max(...values, 1);
+        const barChars = { filled: '█', empty: '░' };
+
+        const container = containerEl;
+        container.innerHTML = '';
+
+        // Compute barWidth and prepare values and number widths
+        const barWidth = Math.max(10, width);
+        const valueLabels = values.map(v => String(v));
+        const maxNumLen = Math.max(...valueLabels.map(s => s.length), 0);
+        const labelWidth = 12; // we use padEnd(12)
+
+        // For each line we compute an allowed bar width so that the final line length
+        // leaves space for the number after the closing pipe. If necessary we shrink
+        // the bar for that line.
+        for (let i = 0; i < labels.length; i++) {
+          const row = document.createElement('div');
+          row.className = 'chart-row';
+
+          const labelEl = document.createElement('div');
+          labelEl.textContent = labels[i];
+
+          const num = String(values[i]);
+
+          // compute bar lengths per line
+          const rawLen = Math.round((values[i] / maxVal) * barWidth);
+          const filledLen = Math.min(rawLen, barWidth);
+          const filled = barChars.filled.repeat(filledLen);
+          const empty = barChars.empty.repeat(Math.max(0, barWidth - filledLen));
+
+          const barEl = document.createElement('div');
+          barEl.className = 'chart-bar';
+          barEl.textContent = `${filled}${empty}`;
+
+          const numEl = document.createElement('div');
+          numEl.className = 'chart-num';
+          numEl.textContent = num;
+
+          row.appendChild(labelEl);
+          row.appendChild(barEl);
+          row.appendChild(numEl);
+          container.appendChild(row);
+        }
+      }
+
+      function renderNumericSummary(containerEl, labels, values) {
+        if (!containerEl) return;
+        const parts = labels.map((l, i) => `${l}: ${values[i]}`);
+        containerEl.textContent = parts.join('   —   ');
+      }
+
+      async function updateChart() {
+        const el = document.getElementById('pdf-chart');
+        if (!el) return;
+        el.textContent = 'Updating…';
+        const counts = await fetchPdfCounts();
+        const labels = ['Total', 'This week', 'This month'];
+        const values = [counts.total || 0, counts.week || 0, counts.month || 0];
+        renderHorizontalAsciiChart(el, labels, values);
+      }
+
+      async function fetchTrafficStatus() {
+        try {
+          const r = await fetch('/api/traffic-status');
+          if (!r.ok) throw new Error('Network response was not ok');
+          const json = await r.json();
+          // Prefer TB values when provided by API
+          const usedTB = json.usage?.tb !== undefined ? json.usage.tb : (json.usage?.gb || 0) / 1024;
+          const limitTB = json.limit?.tb !== undefined ? json.limit.tb : (json.limit?.gb || 0) / 1024;
+          return {
+            usedTB: Number(usedTB),
+            limitTB: Number(limitTB)
+          };
+        } catch (err) {
+          console.error('Failed to fetch traffic status', err);
+          return { usedTB: 0, limitTB: 0 };
+        }
+      }
+
+      function renderTrafficChart(containerEl, usedTB, limitTB) {
+        // usedTB and limitTB are in TB (not GiB)
+        const usedStr = Number(usedTB).toFixed(3);
+        const limitStr = Number(limitTB).toFixed(0);
+        const percentage = limitTB > 0 ? ((usedTB / limitTB) * 100).toFixed(1) : 0;
+        
+        const barWidth = Math.max(40, Math.min(120, Math.floor((window.innerWidth || 800) / 8)));
+        const  filledLen = limitTB > 0 ? Math.round((usedTB / limitTB) * barWidth) : 0;
+        const filled = '█'.repeat(Math.min(filledLen, barWidth));
+        const empty = '░'.repeat(Math.max(0, barWidth - filledLen));
+
+        containerEl.innerHTML = '';
+        
+        const row = document.createElement('div');
+        row.className = 'chart-row';
+
+        const labelEl = document.createElement('div');
+        labelEl.textContent = `${usedStr}/${limitStr} TB`;
+
+        const barEl = document.createElement('div');
+        barEl.className = 'chart-bar';
+        barEl.textContent = `${filled}${empty}`;
+
+        const numEl = document.createElement('div');
+        numEl.className = 'chart-num';
+        numEl.textContent = `${percentage}%`;
+
+        row.appendChild(labelEl);
+        row.appendChild(barEl);
+        row.appendChild(numEl);
+        containerEl.appendChild(row);
+      }
+
+      async function updateTrafficChart() {
+        const el = document.getElementById('traffic-chart');
+        if (!el) return;
+        el.textContent = 'Updating…';
+        const status = await fetchTrafficStatus();
+        renderTrafficChart(el, status.usedTB || 0, status.limitTB || 0);
+      }
+
+      document.addEventListener('DOMContentLoaded', () => {
+        updateChart();
+        updateTrafficChart();
+      });
+    </script>
+  </body>
+</html>

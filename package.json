@@ -1,0 +1,37 @@
+{
+  "name": "pdf-rendering-service",
+  "version": "1.0.0",
+  "main": "dist/api.js",
+  "scripts": {
+    "build": "tsc",
+    "start:api": "node dist/api.js",
+    "start:worker": "node dist/worker.js",
+    "dev:api": "ts-node src/api.ts",
+    "dev:worker": "ts-node src/worker.ts",
+    "db:migrate": "sequelize-cli db:migrate"
+  },
+  "dependencies": {
+    "@fastify/cors": "^11.1.0",
+    "@fastify/rate-limit": "^10.3.0",
+    "adm-zip": "^0.5.10",
+    "bullmq": "^5.61.2",
+    "fastify": "^5.6.1",
+    "file-type": "^18.7.0",
+    "ioredis": "^5.3.2",
+    "markdown-it": "^14.1.0",
+    "nunjucks": "^3.2.4",
+    "pg": "^8.11.3",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.37.7",
+    "uuid": "^13.0.0"
+  },
+  "devDependencies": {
+    "@types/adm-zip": "^0.5.5",
+    "@types/markdown-it": "^14.1.2",
+    "@types/node": "^20.10.6",
+    "@types/nunjucks": "^3.2.6",
+    "@types/uuid": "^9.0.7",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  }
+}

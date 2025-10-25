@@ -1,0 +1,35 @@
+import { exec } from 'child_process';
+import { promisify } from 'util';
+import { writeFile, readFile, unlink } from 'fs/promises';
+import { join } from 'path';
+import { randomUUID } from 'crypto';
+
+const execAsync = promisify(exec);
+
+export async function renderPagedJS(html: string): Promise<Buffer> {
+  const id = randomUUID();
+  const inputPath = join('/tmp', `${id}.html`);
+  const outputPath = join('/tmp', `${id}.pdf`);
+
+  try {
+    await writeFile(inputPath, html);
+    
+    const { stderr } = await execAsync(
+      `pagedjs-cli ${inputPath} -o ${outputPath}`,
+      { maxBuffer: 10 * 1024 * 1024 }
+    );
+    
+    if (stderr) {
+      console.warn('Paged.js warnings:', stderr);
+    }
+    
+    const pdf = await readFile(outputPath);
+    return pdf;
+  } catch (error: any) {
+    const msg = error instanceof Error ? error.message : String(error);
+    throw new Error(`Paged.js rendering failed: ${msg}`);
+  } finally {
+    await unlink(inputPath).catch(() => {});
+    await unlink(outputPath).catch(() => {});
+  }
+}

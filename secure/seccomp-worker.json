@@ -1,0 +1,32 @@
+{
+  "defaultAction": "SCMP_ACT_ALLOW",
+  "architectures": [
+    "SCMP_ARCH_X86_64",
+    "SCMP_ARCH_X86",
+    "SCMP_ARCH_X32"
+  ],
+  "syscalls": [
+    {
+      "names": [
+        "init_module",
+        "finit_module",
+        "delete_module",
+        "kexec_load",
+        "iopl",
+        "ioperm",
+        "reboot",
+        "bpf",
+        "perf_event_open"
+      ],
+      "action": "SCMP_ACT_ERRNO",
+      "args": [],
+      "comment": "Block kernel/module and powerful perf/bpf syscalls"
+    },
+    {
+      "names": ["ptrace"],
+      "action": "SCMP_ACT_ERRNO",
+      "args": [],
+      "comment": "Prevent ptrace-based interference with setuid sandbox"
+    }
+  ]
+}
