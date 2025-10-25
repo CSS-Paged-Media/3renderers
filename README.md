@@ -1,6 +1,6 @@
 # 3renderers.dev
 
-A powerful, scalable PDF generation API supporting three industry-standard rendering engines: **WeasyPrint**, **Paged.js**, and **Vivliostyle**. Built with Node.js, TypeScript, and Docker.
+A powerful, scalable PDF generation API supporting three open-source rendering engines: **WeasyPrint**, **Paged.js**, and **Vivliostyle**. Built with Node.js, TypeScript, and Docker.
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Node](https://img.shields.io/badge/node-20.x-green.svg)
