@@ -56,10 +56,10 @@ docker-compose -f docker-compose.yml logs -f
 
 ## 3. Rebuild cron (optional)
 ```bash
-chmod +x /root/pdf-rendering-service/scripts/update-docker.sh
+chmod +x /opt/3renderers/scripts/update-docker.sh
 
 # Run daily at 2 AM
-0 2 * * * /root/pdf-rendering-service/scripts/update-docker.sh
+0 2 * * * /opt/3renderers/scripts/update-docker.sh
 ```
 
 ### 4. Test the API
@@ -75,10 +75,6 @@ curl -X POST http://localhost/api/render \
     }
   }' \
   --output test.pdf
-
-# Open the generated PDF
-open test.pdf  # macOS
-xdg-open test.pdf  # Linux
 ```
 
 ## 📚 API Documentation
