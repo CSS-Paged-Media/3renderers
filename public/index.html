@@ -661,8 +661,8 @@
         if (!el) return;
         el.textContent = 'Updating…';
         const counts = await fetchPdfCounts();
-        const labels = ['Total', 'This week', 'This month'];
-        const values = [counts.total || 0, counts.week || 0, counts.month || 0];
+        const labels = ['Total', 'This month', 'This week'];
+        const values = [counts.total || 0, counts.month || 0, counts.week || 0];
         renderHorizontalAsciiChart(el, labels, values);
       }
 
@@ -685,13 +685,12 @@
       }
 
       function renderTrafficChart(containerEl, usedTB, limitTB) {
-        // usedTB and limitTB are in TB (not GiB)
         const usedStr = Number(usedTB).toFixed(3);
         const limitStr = Number(limitTB).toFixed(0);
         const percentage = limitTB > 0 ? ((usedTB / limitTB) * 100).toFixed(1) : 0;
         
         const barWidth = Math.max(40, Math.min(120, Math.floor((window.innerWidth || 800) / 8)));
-        const  filledLen = limitTB > 0 ? Math.round((usedTB / limitTB) * barWidth) : 0;
+        const filledLen = limitTB > 0 ? Math.round((usedTB / limitTB) * barWidth) : 0;
         const filled = '█'.repeat(Math.min(filledLen, barWidth));
         const empty = '░'.repeat(Math.max(0, barWidth - filledLen));
 
