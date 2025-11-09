@@ -1,0 +1,517 @@
+openapi: 3.0.3
+info:
+  title: 3renderers PDF API
+  description: |
+    API for converting HTML/Markdown to PDF using three open-source rendering engines: Paged.js, WeasyPrint, and Vivliostyle.
+    
+    **3renderers** supports three open-source tools [Paged.js](https://pagedjs.org/), [WeasyPrint](https://weasyprint.org/), and [Vivliostyle](https://vivliostyle.org/).
+    
+    The service allows you to create PDFs from your HTML/Markdown and CSS source free of cost.
+    
+    **Please be aware that there is no guarantee that this service will be available or that the current rate limits and monthly traffic restrictions will stay the same.**
+    
+    Once the monthly max. traffic is reached, the service will return an error message. On the first of each month, the limit is reset, and you will be able to render more PDFs.
+    
+    If you want to avoid the traffic and rate limits, you can host this service yourself. The code is available under the MIT license ([https://github.com/CSS-Paged-Media/3renderers](https://github.com/CSS-Paged-Media/3renderers)).
+  version: 1.0.0
+  contact:
+    url: https://github.com/CSS-Paged-Media/3renderers
+  license:
+    name: MIT
+    url: https://github.com/CSS-Paged-Media/3renderers/blob/main/LICENSE
+
+servers:
+  - url: https://3renderers.dev
+    description: Production server
+
+tags:
+  - name: Rendering
+    description: PDF rendering endpoints
+  - name: Monitoring
+    description: Service health and metrics endpoints
+
+paths:
+  /api/render:
+    post:
+      tags:
+        - Rendering
+      summary: Render HTML or Markdown to PDF
+      description: |
+        Convert HTML or Markdown content to PDF. Supports both synchronous and asynchronous rendering.
+        
+        **Note:** You must provide either `html` OR `markdown`, but not both. If rendering asynchronously, you'll receive a `pdfid` to check the job status.
+        
+        For checking async job status, send a request with only the `pdfid` field.
+      operationId: renderPDF
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/RenderRequest'
+                - $ref: '#/components/schemas/JobStatusRequest'
+            examples:
+              simpleHTML:
+                summary: Simple HTML to PDF (Sync)
+                value:
+                  html: "<h1>Simple PDF Test</h1><p>This is a simple HTML to PDF conversion.</p>"
+                  options:
+                    renderer: "weasyprint"
+                    sync: "true"
+              htmlWithCSS:
+                summary: HTML with CSS (Sync)
+                value:
+                  html: "<div class='header'><h1>Styled PDF</h1></div><div class='content'><p>This PDF has custom CSS styling.</p></div>"
+                  css: "body { font-family: Arial, sans-serif; margin: 40px; } .header { background: #ff0000; color: white; padding: 20px; }"
+                  options:
+                    renderer: "weasyprint"
+                    sync: "true"
+              htmlWithJavaScript:
+                summary: HTML with JavaScript (pagedjs/vivliostyle only)
+                value:
+                  html: "<h1>JavaScript Enabled PDF</h1><div id='dynamic-content'></div>"
+                  css: "body { font-family: Arial, sans-serif; padding: 40px; }"
+                  javascript: "document.getElementById('dynamic-content').innerHTML = '<strong>Added by JavaScript!</strong>';"
+                  options:
+                    renderer: "pagedjs"
+                    sync: "true"
+              simpleMarkdown:
+                summary: Simple Markdown to PDF (Sync)
+                value:
+                  markdown: "# Introduction\n\n## Get started with the Open Floor Protocol (OFP)\n\nOFP is an open protocol..."
+                  options:
+                    renderer: "weasyprint"
+                    sync: "true"
+              templateSingleData:
+                summary: Template with Single Data Object
+                value:
+                  html: "<h1>Invoice for {{ customer_name }}</h1><p><strong>Invoice #:</strong> {{ invoice_number }}</p>"
+                  css: "body { font-family: Arial, sans-serif; padding: 40px; }"
+                  data:
+                    - customer_name: "John Doe"
+                      invoice_number: "INV-2025-001"
+                      date: "2025-10-23"
+                      amount: "1250.00"
+                  options:
+                    renderer: "weasyprint"
+                    sync: "true"
+              templateMultipleData:
+                summary: Template with Multiple Data Objects (Batch)
+                value:
+                  html: "<h1>Certificate for {{ name }}</h1><p>Course: {{ course }}</p>"
+                  data:
+                    - name: "Alice Johnson"
+                      course: "Advanced TypeScript"
+                    - name: "Bob Smith"
+                      course: "Advanced TypeScript"
+                  options:
+                    renderer: "weasyprint"
+                    sync: "true"
+              asyncRendering:
+                summary: Async Rendering - Start Job
+                value:
+                  html: "<h1>Async PDF Generation</h1><p>This PDF is being generated asynchronously.</p>"
+                  css: "body { font-family: Arial, sans-serif; padding: 40px; }"
+                  options:
+                    renderer: "weasyprint"
+                    sync: "false"
+              checkJobStatus:
+                summary: Check Async Job Status
+                value:
+                  pdfid: "5bd48a77-30a8-4d15-bb99-48b55995592c"
+              withAssets:
+                summary: HTML with Assets ZIP
+                value:
+                  html: "<h1>Hello World</h1><img src='tree.png'/>"
+                  css: "body { color: red; }"
+                  assets: "UEsDSYkSE8mCCCF4IHXYab/C+q2RZnG39vKAAAAAElFTkSuQmCC..."
+                  options:
+                    renderer: "weasyprint"
+                    sync: "true"
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+              example: "PDF binary content"
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/AsyncJobResponse'
+                  - $ref: '#/components/schemas/JobStatusResponse'
+              examples:
+                asyncJobStarted:
+                  summary: Async job started
+                  value:
+                    pdfid: "5bd48a77-30a8-4d15-bb99-48b55995592c"
+                jobProcessing:
+                  summary: Job still processing
+                  value:
+                    status: "processing"
+                    message: "PDF is being generated"
+        '400':
+          description: Bad Request - Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                missingHTML:
+                  summary: Missing required HTML field
+                  value:
+                    message: "Required \"html\" Key not found in Body"
+                invalidRenderer:
+                  summary: Invalid renderer option
+                  value:
+                    message: "Invalid Renderer Option passed, valid options are \"weasyprint\", \"pagedjs\", and \"vivliostyle\""
+                javascriptNotSupported:
+                  summary: JavaScript with WeasyPrint
+                  value:
+                    message: "Invalid Renderer Option passed, as the renderer does not support JavaScript use \"pagedjs\", or \"vivliostyle\" as renderer"
+                invalidPdfId:
+                  summary: Invalid PDF ID
+                  value:
+                    pdfid: "invalid-pdf-id-12345"
+                    status: "error"
+                    message: "pdfid invalid"
+                bothHtmlAndMarkdown:
+                  summary: Both HTML and Markdown provided
+                  value:
+                    message: "Exactly one of \"html\" or \"markdown\" must be provided"
+
+  /health:
+    get:
+      tags:
+        - Monitoring
+      summary: Health Check
+      description: Check if the service and its dependencies are healthy
+      operationId: healthCheck
+      responses:
+        '200':
+          description: Service is healthy
+          headers:
+            x-ratelimit-limit:
+              schema:
+                type: integer
+              description: Request limit per minute
+              example: 60
+            x-ratelimit-remaining:
+              schema:
+                type: integer
+              description: Remaining requests in current window
+              example: 59
+            x-ratelimit-reset:
+              schema:
+                type: integer
+              description: Seconds until rate limit resets
+              example: 60
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+              example:
+                status: "healthy"
+                timestamp: "2025-10-23T14:34:38.912Z"
+                services:
+                  database: "ok"
+                  redis: "ok"
+                  api: "ok"
+
+  /api/traffic-status:
+    get:
+      tags:
+        - Monitoring
+      summary: Traffic Usage Status
+      description: Check current traffic usage against monthly limits
+      operationId: trafficStatus
+      responses:
+        '200':
+          description: Traffic usage information
+          headers:
+            x-ratelimit-limit:
+              schema:
+                type: integer
+              example: 60
+            x-ratelimit-remaining:
+              schema:
+                type: integer
+              example: 59
+            x-ratelimit-reset:
+              schema:
+                type: integer
+              example: 60
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrafficStatusResponse'
+              example:
+                usage:
+                  bytes: 238277
+                  gb: 0
+                  percent: 0
+                  tb: 0
+                remaining:
+                  bytes: 20890720689467
+                  gb: 19456
+                limit:
+                  bytes: 20890720927744
+                  gb: 19456
+                  tb: 20
+                status: "OK"
+                resetDate: "2025-11-01"
+
+  /api/metrics/pdf:
+    get:
+      tags:
+        - Monitoring
+      summary: PDF Generation Metrics
+      description: Get counts of PDFs generated (total, week, month)
+      operationId: pdfMetrics
+      responses:
+        '200':
+          description: PDF generation metrics
+          headers:
+            x-ratelimit-limit:
+              schema:
+                type: integer
+              example: 60
+            x-ratelimit-remaining:
+              schema:
+                type: integer
+              example: 59
+            x-ratelimit-reset:
+              schema:
+                type: integer
+              example: 60
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetricsResponse'
+              example:
+                counts:
+                  total: 23
+                  week: 23
+                  month: 23
+
+components:
+  schemas:
+    RenderRequest:
+      type: object
+      properties:
+        html:
+          type: string
+          description: HTML content to render (mutually exclusive with markdown)
+          example: "<h1>Hello World</h1><p>This is a test.</p>"
+        markdown:
+          type: string
+          description: Markdown content to render (mutually exclusive with html)
+          example: "# Hello World\n\nThis is a test."
+        css:
+          type: string
+          description: Custom CSS styling
+          example: "body { font-family: Arial, sans-serif; margin: 40px; }"
+        javascript:
+          type: string
+          description: JavaScript code (only supported by pagedjs and vivliostyle renderers)
+          example: "document.getElementById('test').innerHTML = 'Dynamic content';"
+        data:
+          type: array
+          description: Array of data objects for template rendering using Nunjucks syntax
+          items:
+            type: object
+            additionalProperties: true
+          example:
+            - name: "John Doe"
+              amount: "1250.00"
+        assets:
+          type: string
+          description: Base64-encoded ZIP file containing assets (images, fonts, etc.)
+          example: "UEsDSYkSE8mCCCF4IHXYab/C+q2RZnG39vKAAAAAElFTkSuQmCC..."
+        options:
+          type: object
+          required:
+            - renderer
+            - sync
+          properties:
+            renderer:
+              type: string
+              enum:
+                - weasyprint
+                - pagedjs
+                - vivliostyle
+              description: PDF rendering engine to use
+              example: "weasyprint"
+            sync:
+              type: string
+              enum:
+                - "true"
+                - "false"
+              description: Whether to render synchronously (returns PDF) or asynchronously (returns pdfid)
+              example: "true"
+      required:
+        - options
+
+    JobStatusRequest:
+      type: object
+      required:
+        - pdfid
+      properties:
+        pdfid:
+          type: string
+          format: uuid
+          description: PDF job identifier returned from async rendering request
+          example: "5bd48a77-30a8-4d15-bb99-48b55995592c"
+
+    AsyncJobResponse:
+      type: object
+      properties:
+        pdfid:
+          type: string
+          format: uuid
+          description: Job identifier to check rendering status
+          example: "5bd48a77-30a8-4d15-bb99-48b55995592c"
+
+    JobStatusResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          description: Current status of the PDF generation job
+          example: "processing"
+        message:
+          type: string
+          description: Human-readable status message
+          example: "PDF is being generated"
+
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message describing what went wrong
+          example: "Required \"html\" Key not found in Body"
+        pdfid:
+          type: string
+          description: PDF ID (only present for invalid pdfid errors)
+          example: "invalid-pdf-id-12345"
+        status:
+          type: string
+          description: Error status (only present for invalid pdfid errors)
+          example: "error"
+
+    HealthResponse:
+      type: object
+      required:
+        - status
+        - timestamp
+        - services
+      properties:
+        status:
+          type: string
+          enum:
+            - healthy
+            - unhealthy
+          example: "healthy"
+        timestamp:
+          type: string
+          format: date-time
+          example: "2025-10-23T14:34:38.912Z"
+        services:
+          type: object
+          properties:
+            database:
+              type: string
+              enum:
+                - ok
+                - error
+              example: "ok"
+            redis:
+              type: string
+              enum:
+                - ok
+                - error
+              example: "ok"
+            api:
+              type: string
+              enum:
+                - ok
+                - error
+              example: "ok"
+
+    TrafficStatusResponse:
+      type: object
+      required:
+        - usage
+        - remaining
+        - limit
+        - status
+        - resetDate
+      properties:
+        usage:
+          type: object
+          properties:
+            bytes:
+              type: integer
+              example: 238277
+            gb:
+              type: integer
+              example: 0
+            percent:
+              type: integer
+              example: 0
+            tb:
+              type: integer
+              example: 0
+        remaining:
+          type: object
+          properties:
+            bytes:
+              type: integer
+              example: 20890720689467
+            gb:
+              type: integer
+              example: 19456
+        limit:
+          type: object
+          properties:
+            bytes:
+              type: integer
+              example: 20890720927744
+            gb:
+              type: integer
+              example: 19456
+            tb:
+              type: integer
+              example: 20
+        status:
+          type: string
+          example: "OK"
+        resetDate:
+          type: string
+          format: date
+          example: "2025-11-01"
+
+    MetricsResponse:
+      type: object
+      required:
+        - counts
+      properties:
+        counts:
+          type: object
+          properties:
+            total:
+              type: integer
+              description: Total PDFs generated all-time
+              example: 23
+            week:
+              type: integer
+              description: PDFs generated this week
+              example: 23
+            month:
+              type: integer
+              description: PDFs generated this month
+              example: 12

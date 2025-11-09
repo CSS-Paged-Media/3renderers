@@ -563,6 +563,13 @@
         </figure>
       </section>
 
+    <!-- API-Dokumentation (ReDoc) -->
+    <section id="api-docs" style="margin-top:2rem;">
+      <h2>API Documentation</h2>
+      <p>Interactive OpenAPI docs powered by ReDoc — <a href="/openapi.yaml" target="_blank" rel="noopener">OpenAPI Spec</a>.</p>
+      <div id="redoc-container" style="height: 70vh;"></div>
+    </section>
+
     </main>
 
     <style>
@@ -728,6 +735,11 @@
         updateChart();
         updateTrafficChart();
       });
+    </script>
+    <script src="https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js"></script>
+    <script>
+      // ReDoc initialisieren und die im Webroot liegende openapi.yaml laden
+      Redoc.init('/openapi.yaml', {}, document.getElementById('redoc-container'));
     </script>
   </body>
 </html>
