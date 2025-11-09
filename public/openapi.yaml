@@ -153,6 +153,22 @@ paths:
                   value:
                     status: "processing"
                     message: "PDF is being generated"
+          headers:
+            x-ratelimit-limit:
+              schema:
+                type: integer
+              description: Request limit per minute
+              example: 60
+            x-ratelimit-remaining:
+              schema:
+                type: integer
+              description: Remaining requests in current window
+              example: 59
+            x-ratelimit-reset:
+              schema:
+                type: integer
+              description: Seconds until rate limit resets
+              example: 60
         '400':
           description: Bad Request - Invalid input
           content:
@@ -182,6 +198,22 @@ paths:
                   summary: Both HTML and Markdown provided
                   value:
                     message: "Exactly one of \"html\" or \"markdown\" must be provided"
+          headers:
+            x-ratelimit-limit:
+              schema:
+                type: integer
+              description: Request limit per minute
+              example: 60
+            x-ratelimit-remaining:
+              schema:
+                type: integer
+              description: Remaining requests in current window
+              example: 59
+            x-ratelimit-reset:
+              schema:
+                type: integer
+              description: Seconds until rate limit resets
+              example: 60
 
   /health:
     get:
