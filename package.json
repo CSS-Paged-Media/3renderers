@@ -28,7 +28,7 @@
   "devDependencies": {
     "@types/adm-zip": "^0.5.5",
     "@types/markdown-it": "^14.1.2",
-    "@types/node": "^24.10.0",
+    "@types/node": "^24.10.1",
     "@types/nunjucks": "^3.2.6",
     "@types/uuid": "^11.0.0",
     "ts-node": "^10.9.2",
