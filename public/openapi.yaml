@@ -400,15 +400,21 @@ components:
 
     AsyncJobResponse:
       type: object
+      required:
+        - pdfid
       properties:
         pdfid:
           type: string
           format: uuid
           description: Job identifier to check rendering status
           example: "5bd48a77-30a8-4d15-bb99-48b55995592c"
+      additionalProperties: false
 
     JobStatusResponse:
       type: object
+      required:
+        - status
+        - message
       properties:
         status:
           type: string
@@ -418,6 +424,7 @@ components:
           type: string
           description: Human-readable status message
           example: "PDF is being generated"
+      additionalProperties: false
 
     ErrorResponse:
       type: object
