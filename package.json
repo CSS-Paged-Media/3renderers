@@ -22,7 +22,7 @@
     "nunjucks": "^3.2.4",
     "pg": "^8.11.3",
     "pg-hstore": "^2.3.4",
-    "sequelize": "^6.37.7",
+    "sequelize": "^6.37.8",
     "uuid": "^13.0.0"
   },
   "devDependencies": {
